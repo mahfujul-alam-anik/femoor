@@ -25,7 +25,7 @@ export default function OrderPage() {
 
   useEffect(() => {
     fetch('/api/products').then((r) => r.json()).then(setProducts);
-    fetch('/api/orders').then((r) => r.json()).then((d) => setOrders(d.items || []));
+    fetch('/api/orders').then((r) => r.json()).then(setOrders);
   }, []);
 
   const total = useMemo(() => Number(form.sellingPrice || 0) * Number(form.quantity || 0), [form.sellingPrice, form.quantity]);
@@ -34,7 +34,7 @@ export default function OrderPage() {
     e.preventDefault();
     await fetch('/api/orders', { method: 'POST', body: JSON.stringify({ ...form, totalPrice: total, quantity: Number(form.quantity), weightKg: Number(form.weightKg), exactPrice: Number(form.exactPrice), sellingPrice: Number(form.sellingPrice), deliveryCost: Number(form.deliveryCost) }) });
     const refreshed = await fetch('/api/orders').then((r) => r.json());
-    setOrders(refreshed.items || []);
+    setOrders(refreshed);
   };
 
   return (

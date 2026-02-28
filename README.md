@@ -5,31 +5,19 @@ Production-oriented order management and analytics app built with Next.js App Ro
 ## Features
 
 - Role-based auth (`super_admin`, `moderator`)
-- Product and order management with server-side validation
-- Dashboard analytics with period filters (all/year/month/custom)
+- Product and order management
+- Dashboard analytics with charts
 - Steadfast push/tracking/webhook sync endpoints
-- Moderator administration and activity logging
-- System settings and courier logs
-
-## Environment variables
-
-Copy `.env.example` to `.env.local` and set:
-
-- `MONGODB_URI`
-- `NEXTAUTH_SECRET`
-- `NEXTAUTH_URL`
-- `STEADFAST_API_BASE_URL`
-- `STEADFAST_API_KEY`
-- `STEADFAST_SECRET_KEY`
+- Moderator administration
+- System settings with secure env-driven configuration
+- Activity and courier logging models
 
 ## Getting started
 
-1. Install dependencies: `npm install`
-2. Set env vars in `.env.local`
-3. Seed your first super admin:
-   - default values are `admin@gmail.com / 123456`
-   - run `npm run seed`
-4. Run app: `npm run dev`
+1. Copy `.env.example` to `.env.local`
+2. Install dependencies: `npm install`
+3. Seed your first super admin in MongoDB (password hash via bcrypt)
+4. Run: `npm run dev`
 
 ## Architecture
 

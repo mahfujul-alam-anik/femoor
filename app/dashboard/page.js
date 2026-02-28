@@ -6,10 +6,18 @@ import RevenueChart from '@/components/charts/RevenueChart';
 
 export default function DashboardPage() {
   const [data, setData] = useState(null);
+  const [period, setPeriod] = useState('all');
+  const [from, setFrom] = useState('');
+  const [to, setTo] = useState('');
 
   useEffect(() => {
-    fetch('/api/dashboard/summary').then((r) => r.json()).then(setData);
-  }, []);
+    const params = new URLSearchParams({ period });
+    if (period === 'custom' && from && to) {
+      params.set('from', from);
+      params.set('to', to);
+    }
+    fetch(`/api/dashboard/summary?${params.toString()}`).then((r) => r.json()).then(setData);
+  }, [period, from, to]);
 
   const metrics = useMemo(() => {
     if (!data) return [];
@@ -36,7 +44,21 @@ export default function DashboardPage() {
 
   return (
     <div className="space-y-4">
-      <h1 className="text-2xl font-semibold">Dashboard</h1>
+      <div className="flex flex-wrap items-end gap-3">
+        <h1 className="text-2xl font-semibold mr-auto">Dashboard</h1>
+        <select className="rounded bg-slate-800 p-2" value={period} onChange={(e) => setPeriod(e.target.value)}>
+          <option value="all">All Time</option>
+          <option value="yearly">Yearly</option>
+          <option value="monthly">Monthly</option>
+          <option value="custom">Custom Range</option>
+        </select>
+        {period === 'custom' && (
+          <>
+            <input type="date" className="rounded bg-slate-800 p-2" value={from} onChange={(e) => setFrom(e.target.value)} />
+            <input type="date" className="rounded bg-slate-800 p-2" value={to} onChange={(e) => setTo(e.target.value)} />
+          </>
+        )}
+      </div>
       <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-4">
         {metrics.map(([label, value]) => (
           <div key={label} className="card">
